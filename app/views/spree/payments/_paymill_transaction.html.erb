@@ -1,0 +1,6 @@
+<% elsif source.is_a?(Spree::PaymillTransaction) %>
+  <span class="cc-type">
+    <%= image_tag "credit_cards/icons/#{source.payment_response.card_type}.png" %>
+    <%= Spree.t(:ending_in) %> <%= source.payment_response.last4 %>
+  </span>
+  <br />
