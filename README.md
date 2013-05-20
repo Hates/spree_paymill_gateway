@@ -5,6 +5,8 @@ for payments so no credit card details ever reach your server. This removes the 
 
 This can be used as the basis for Stripe Javascript payments to as they are very similar in practice.
 
+**This is very much still work in progress!**
+
 ## Installation
 
 Add spree_paymill_gateway to your Gemfile:
