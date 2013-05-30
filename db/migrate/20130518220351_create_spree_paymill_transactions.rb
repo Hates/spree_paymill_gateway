@@ -8,5 +8,9 @@ class CreateSpreePaymillTransactions < ActiveRecord::Migration
       t.string :transaction_id
       t.text :transaction_response
     end
+
+    add_index :spree_paymill_transactions, :token_id
+    add_index :spree_paymill_transactions, :payment_id
+    add_index :spree_paymill_transactions, :transaction_id
   end
 end
