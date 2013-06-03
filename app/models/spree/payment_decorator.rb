@@ -1,6 +1,6 @@
 Spree::Payment.class_eval do
 
-  after_create :create_paymill_payment
+  after_save :create_paymill_payment, if: :profiles_supported?
 
   private
 

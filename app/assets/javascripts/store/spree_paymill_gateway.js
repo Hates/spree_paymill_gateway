@@ -1,5 +1,3 @@
-//= require store/spree_frontend
-
 var SpreePaymillHandler = function() {
 
   var SpreePaymillHandlerConstructor = function(options) {

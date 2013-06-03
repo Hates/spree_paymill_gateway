@@ -7,7 +7,7 @@
 
 <p class="field" data-hook="card_holdername">
   <%= label_tag "card_holdername", Spree.t(:card_holdername) %><span class="required">*</span><br />
-  <%= text_field_tag "#{param_prefix}[card_holdername]", '', options_hash.merge(id: 'card_holdername', class: 'required', id: "card_holdername", name: "", value: @order.name, size: 5) %>
+  <%= text_field_tag "#{param_prefix}[card_holdername]", '', options_hash.merge(id: 'card_holdername', class: 'required', id: "card_holdername", name: "", value: @order.name, size: 19) %>
 </p>
 <p class="field" data-hook="card_number">
   <%= label_tag "card_number", Spree.t(:card_number) %><span class="required">*</span><br />
