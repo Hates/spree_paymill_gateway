@@ -6,7 +6,8 @@ Spree::Payment.class_eval do
 
   def create_paymill_payment
     return unless is_paymill_payment?
-    payment_method.create_profile(self)
+
+    payment_method.create_profile self
   rescue ActiveMerchant::ConnectionError => e
     gateway_error e
   end

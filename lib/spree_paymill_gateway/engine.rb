@@ -1,7 +1,5 @@
 module SpreePaymillGateway
   class Engine < Rails::Engine
-    require 'spree/core'
-    isolate_namespace Spree
     engine_name 'spree_paymill_gateway'
 
     config.autoload_paths += %W(#{config.root}/lib)
@@ -17,7 +15,7 @@ module SpreePaymillGateway
       end
     end
 
-    initializer "spree_paypal_express.register.payment_methods" do |app|
+    initializer "spree.gateway.paymill_method", :after => "spree.register.payment_methods" do |app|
       app.config.spree.payment_methods << Spree::Gateway::PaymillGateway
     end
 

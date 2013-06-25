@@ -4,17 +4,18 @@ var SpreePaymillHandler = function() {
     options = options || {};
 
     this.paramPrefix = options.prefix;
+    this.paramMethod = options.method;
 
-    this.$paymillForm = $(options.form);
-    this.$cardAmount = this.$paymillForm.find("#card_amount");
-    this.$cardCurrency = this.$paymillForm.find("#card_currency");
-    this.$cardHolderName = this.$paymillForm.find("#card_holdername");
-    this.$cardNumber = this.$paymillForm.find("#card_number");
-    this.$cardCVC = this.$paymillForm.find("#card_code");
-    this.$cardExpiryMonth = this.$paymillForm.find("#card_month");
-    this.$cardExpiryYear = this.$paymillForm.find("#card_year");
+    this.$paymentForm = $(options.form);
+    this.$cardAmount = this.$paymentForm.find("#card_amount");
+    this.$cardCurrency = this.$paymentForm.find("#card_currency");
+    this.$cardHolderName = this.$paymentForm.find("#card_holdername");
+    this.$cardNumber = this.$paymentForm.find("#card_number");
+    this.$cardCVC = this.$paymentForm.find("#card_code");
+    this.$cardExpiryMonth = this.$paymentForm.find("#card_month");
+    this.$cardExpiryYear = this.$paymentForm.find("#card_year");
 
-    this.$submitButton = this.$paymillForm.find("input[type='submit']");
+    this.$submitButton = this.$paymentForm.find("button[name='checkout']");
   }
 
   SpreePaymillHandlerConstructor.prototype = {
@@ -30,8 +31,8 @@ var SpreePaymillHandler = function() {
           $token_field.attr("name", self.paramPrefix + "[token_id]");
           $token_field.attr("type", "hidden");
           $token_field.val(result.token);
-          self.$paymillForm.append($token_field);
-          self.$paymillForm.get(0).submit();
+          self.$paymentForm.append($token_field);
+          self.$paymentForm.get(0).submit();
         }
       };
 
@@ -48,20 +49,20 @@ var SpreePaymillHandler = function() {
             afterError(self.$cardNumber, "Please enter a valid card number.");
             break;
           case "field_invalid_card_exp_month":
-            afterError(self.$cardExpiryMonth, "Please enter a valid expiry month.");
+            afterError(self.$cardExpiryYear, "Please enter a valid expiry month.");
             break;
           case "field_invalid_card_exp_year":
-            afterError(self.$cardExpiryMonth, "Please enter a valid expiry year.");
+            afterError(self.$cardExpiryYear, "Please enter a valid expiry year.");
             break;
           case "field_invalid_card_exp":
-            afterError(self.$cardExpiryMonth, "Please enter a valid expiry date.");
+            afterError(self.$cardExpiryYear, "Please enter a valid expiry date.");
             break;
           case "field_invalid_card_cvc":
             afterError(self.$cardCVC, "Please enter a valid CVC number.");
             break;
         }
 
-        self.$submitButton.prop('disabled', false);
+        self.$submitButton.removeAttr('disabled');
       };
 
       var afterError = function(element, message) {
@@ -69,16 +70,24 @@ var SpreePaymillHandler = function() {
       };
 
       var beforeError = function(element, message) {
-        element.before('<span class="error">' + message +'</span><br>');
+        element.before('<span class="error">' + message +'</span>');
       };
 
-      this.$paymillForm.submit(function(event) {
+      this.$paymentForm.submit(function(event) {
+        var paymentMethodSelector = "input[id*='payment_method_id']:checked";
+        var paymentMethod = self.$paymentForm.find(paymentMethodSelector).val();
+
+        // If a different payment method is selected then return.
+        if(paymentMethod !== self.paramMethod) {
+          return;
+        }
+
         event.stopPropagation();
         event.preventDefault();
 
-        // Clear any errors.
-        self.$paymillForm.find(".error").empty();
+        self.$paymentForm.find(".error").empty();
 
+        // Create the initial Paymill token.
         paymill.createToken({
           cardholder: self.$cardHolderName.val(),
           number: self.$cardNumber.val(),
