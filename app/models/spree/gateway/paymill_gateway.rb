@@ -59,32 +59,24 @@ module Spree
       end
     end
 
-    def void(response_code, credit_card, options = {})
-      #ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {}, test: true, authorization: '12345')
-    end
-
-    def credit(money, credit_card, response_code, options = {})
-      #ActiveMerchant::Billing::Response.new(true, 'Bogus Gateway: Forced success', {}, test: true, authorization: '12345')
-    end
-
     def set_payment_key
       Paymill.api_key = preferences[:private_key]
     end
 
     def provider_class
-      self.class
+      Spree::Gateway::PaymillGateway
     end
 
     def payment_source_class
       Spree::PaymillTransaction
     end
 
-    def actions
-      %w(purchase void credit)
-    end
-
     def method_type
       :paymill
+    end
+
+    def actions
+      %w(capture)
     end
 
     def payment_profiles_supported?

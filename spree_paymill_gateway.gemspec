@@ -2,7 +2,7 @@
 Gem::Specification.new do |s|
   s.platform    = Gem::Platform::RUBY
   s.name        = 'spree_paymill_gateway'
-  s.version     = '2.0.0.beta'
+  s.version     = '2.1.0.beta'
   s.summary     = 'Paymill gateway for Spree'
   s.description = 'Paymill gateway for Spree'
   s.required_ruby_version = '>= 1.9.3'

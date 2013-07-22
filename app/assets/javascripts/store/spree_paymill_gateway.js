@@ -66,11 +66,11 @@ var SpreePaymillHandler = function() {
       };
 
       var afterError = function(element, message) {
-        element.after('<span class="error">' + message + '</span>');
+        element.after('<span class="paymill-error">' + message + '</span>');
       };
 
       var beforeError = function(element, message) {
-        element.before('<span class="error">' + message +'</span>');
+        element.before('<span class="paymill-error">' + message +'</span>');
       };
 
       this.$paymentForm.submit(function(event) {
@@ -85,7 +85,7 @@ var SpreePaymillHandler = function() {
         event.stopPropagation();
         event.preventDefault();
 
-        self.$paymentForm.find(".error").empty();
+        self.$paymentForm.find(".paymill-error").empty();
 
         // Create the initial Paymill token.
         paymill.createToken({
