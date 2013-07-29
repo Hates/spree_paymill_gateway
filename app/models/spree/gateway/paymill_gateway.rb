@@ -36,17 +36,20 @@ module Spree
       Rails.logger.info "Authorising payment for paymill token: #{payment_id}"
 
       begin
-        set_payment_key
-        paymill_transaction = Paymill::Transaction.create payment: payment_id,
-          amount: money.to_i,
-          currency: preferences[:currency],
-          description: "Order: #{payment_id}"
+        # Skip processing if the payment looks to have already been made.
+        unless transaction.transaction_id
+          set_payment_key
+          paymill_transaction = Paymill::Transaction.create payment: payment_id,
+            amount: money.to_i,
+            currency: preferences[:currency],
+            description: "Order: #{payment_id}"
 
-        Rails.logger.info "Paymill transaction completed: #{paymill_transaction.id} - #{paymill_transaction.response_code}"
-        Rails.logger.debug "Paymill transaction: #{paymill_transaction.inspect}"
-        transaction.transaction_id = paymill_transaction.id
-        transaction.transaction_response = paymill_transaction
-        transaction.save!
+          Rails.logger.info "Paymill transaction completed: #{paymill_transaction.id} - #{paymill_transaction.response_code}"
+          Rails.logger.debug "Paymill transaction: #{paymill_transaction.inspect}"
+          transaction.transaction_id = paymill_transaction.id
+          transaction.transaction_response = paymill_transaction
+          transaction.save!
+        end
 
         if paymill_transaction.response_code == OK_RESPONSE
           ActiveMerchant::Billing::Response.new(true, 'Paymill Gateway: authorize success', {}, authorization: paymill_transaction.id)
