@@ -52,13 +52,13 @@ module Spree
         end
 
         if paymill_transaction.response_code == OK_RESPONSE
-          ActiveMerchant::Billing::Response.new(true, 'Paymill Gateway: authorize success', {}, authorization: paymill_transaction.id)
+          ActiveMerchant::Billing::Response.new(true, "Paymill Gateway: authorize success", {}, authorization: paymill_transaction.id)
         else
-          ActiveMerchant::Billing::Response.new(false, 'Paymill Gateway: authorize failure', { message: "Response Code: #{paymill_transaction.response_code}" })
+          ActiveMerchant::Billing::Response.new(false, "Paymill Gateway: authorize failure #{paymill_transaction.response_code}", { message: "Sorry, we were unable to process your payment." })
         end
       rescue
         Rails.logger.info "Paymill transaction failed: #{$!}"
-        ActiveMerchant::Billing::Response.new(false, 'Paymill Gateway: complete failure', { message: $! })
+        ActiveMerchant::Billing::Response.new(false, "Paymill Gateway: complete failure #{$!}", { message: "Sorry, we were unable to process your payment." })
       end
     end
 
