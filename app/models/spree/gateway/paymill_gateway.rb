@@ -25,7 +25,7 @@ module Spree
       end
 
       Rails.logger.info "Paymill payment created: #{paymill_payment.id}"
-      Rails.logger.debug "Paymill payment: #{paymill_payment.inspect}"
+      Rails.logger.info "Paymill payment: #{paymill_payment.inspect}"
       paymill_transaction.payment_id = paymill_payment.id
       paymill_transaction.payment_response = paymill_payment
       paymill_transaction.save!
@@ -45,7 +45,7 @@ module Spree
             description: "Order: #{payment_id}"
 
           Rails.logger.info "Paymill transaction completed: #{paymill_transaction.id} - #{paymill_transaction.response_code}"
-          Rails.logger.debug "Paymill transaction: #{paymill_transaction.inspect}"
+          Rails.logger.info "Paymill transaction: #{paymill_transaction.inspect}"
           transaction.transaction_id = paymill_transaction.id
           transaction.transaction_response = paymill_transaction
           transaction.save!
