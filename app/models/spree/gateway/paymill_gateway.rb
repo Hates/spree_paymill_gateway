@@ -25,7 +25,7 @@ module Spree
       end
 
       Rails.logger.info "Paymill payment created: #{paymill_payment.id}"
-      Rails.logger.info "Paymill payment: #{paymill_payment.inspect}"
+      Rails.logger.info "Paymill payment details: #{paymill_payment.inspect}"
       paymill_transaction.payment_id = paymill_payment.id
       paymill_transaction.payment_response = paymill_payment
       paymill_transaction.save!
@@ -45,7 +45,7 @@ module Spree
             description: "Order: #{payment_id}"
 
           Rails.logger.info "Paymill transaction completed: #{paymill_transaction.id} - #{paymill_transaction.response_code}"
-          Rails.logger.info "Paymill transaction: #{paymill_transaction.inspect}"
+          Rails.logger.info "Paymill transaction details: #{paymill_transaction.inspect}"
           transaction.transaction_id = paymill_transaction.id
           transaction.transaction_response = paymill_transaction
           transaction.save!
@@ -54,10 +54,11 @@ module Spree
         if paymill_transaction.response_code == OK_RESPONSE
           ActiveMerchant::Billing::Response.new(true, "Paymill Gateway: authorize success", {}, authorization: paymill_transaction.id)
         else
+          Rails.logger.warn "Paymill payment failed: #{paymill_transaction.response_code}"
           ActiveMerchant::Billing::Response.new(false, "Paymill Gateway: authorize failure #{paymill_transaction.response_code}", { message: "Sorry, we were unable to process your payment." })
         end
       rescue
-        Rails.logger.info "Paymill transaction failed: #{$!}"
+        Rails.logger.warn "Paymill transaction failed: #{$!}"
         ActiveMerchant::Billing::Response.new(false, "Paymill Gateway: complete failure #{$!}", { message: "Sorry, we were unable to process your payment." })
       end
     end
