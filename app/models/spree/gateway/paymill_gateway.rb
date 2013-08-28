@@ -10,8 +10,6 @@ module Spree
     preference :public_key, :string
     preference :currency, :string, default: "GBP"
 
-    attr_accessible :preferred_private_key, :preferred_public_key, :preferred_currency
-
     def create_profile(payment)
       paymill_transaction = payment.source
       Rails.logger.info "Creating payment for paymill token: #{paymill_transaction.token_id}"

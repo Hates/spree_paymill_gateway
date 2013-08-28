@@ -17,6 +17,8 @@ module SpreePaymillGateway
 
     initializer "spree.gateway.paymill_method", :after => "spree.register.payment_methods" do |app|
       app.config.spree.payment_methods << Spree::Gateway::PaymillGateway
+
+      Spree::PermittedAttributes.source_attributes << :token_id
     end
 
     config.to_prepare &method(:activate).to_proc
