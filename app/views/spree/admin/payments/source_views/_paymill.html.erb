@@ -1,5 +1,5 @@
 <fieldset data-hook="credit_card">
-  <% if payment.source.transaction_id && payment.source.transaction_response && payment.source.transaction_response.payment %>
+  <% if payment.source && payment.source.transaction_id && payment.source.transaction_response && payment.source.transaction_response.payment %>
     <legend align="center"><%= Spree.t(:credit_card) %></legend>
     <div class="row">
       <div class="alpha twelve columns">
