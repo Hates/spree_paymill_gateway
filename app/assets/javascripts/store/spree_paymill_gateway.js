@@ -98,7 +98,7 @@ var SpreePaymillHandler = function() {
           currency: self.$cardCurrency.val()
         }, handlePaymillResponse);
       });
-    },
+    }
 
   };
 
