@@ -85,7 +85,7 @@ var SpreePaymillHandler = function() {
         event.stopPropagation();
         event.preventDefault();
 
-        self.$paymentForm.find(".paymill-error").empty();
+        self.$paymentForm.find(".paymill-error").remove();
 
         // Create the initial Paymill token.
         paymill.createToken({
