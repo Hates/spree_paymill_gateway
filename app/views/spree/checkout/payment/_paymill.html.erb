@@ -7,7 +7,7 @@
 
 <p class="field" data-hook="card_holdername">
   <%= label_tag "card_holdername", Spree.t(:card_holdername) %><span class="required">*</span><br />
-  <%= text_field_tag "#{param_prefix}[card_holdername]", '', options_hash.merge(id: 'card_holdername', class: 'required', id: "card_holdername", name: "", value: @order.name, size: 19) %>
+  <%= text_field_tag "#{param_prefix}[card_holdername]", '', options_hash.merge(id: 'card_holdername', class: 'required', id: "card_holdername", name: "", value: "", size: 19) %>
 </p>
 <p class="field" data-hook="card_number">
   <%= label_tag "card_number", Spree.t(:card_number) %><span class="required">*</span><br />
@@ -34,11 +34,9 @@
 <%= javascript_include_tag "https://bridge.paymill.com/" %>
 <script>
   var PAYMILL_PUBLIC_KEY = '<%= payment_method.preferences[:public_key] %>';
+  var PAYMILL_PAYMENT_METHOD_ID = '<%= payment_method.id %>';
+
   $(function() {
-    new SpreePaymillHandler({
-      "form": "#checkout_form_payment",
-      "prefix": '<%= param_prefix %>',
-      "method": '<%= payment_method.id %>'
-    }).init();
+    new SpreePaymillHandler().init();
   });
 </script>
