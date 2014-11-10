@@ -14,7 +14,7 @@ var SpreePaymillHandler = function() {
     this.$cardExpiryMonth = this.$paymentForm.find("#card_month");
     this.$cardExpiryYear = this.$paymentForm.find("#card_year");
 
-    this.$submitButton = this.$paymentForm.find("button[name='checkout']");
+    this.$submitButton = this.$paymentForm.find("input[type='submit'].continue");
   }
 
   SpreePaymillHandlerConstructor.prototype = {
@@ -63,6 +63,7 @@ var SpreePaymillHandler = function() {
         }
 
         self.$submitButton.removeAttr('disabled');
+        self.$submitButton.removeClass('disabled');
       };
 
       var afterError = function(element, message) {
