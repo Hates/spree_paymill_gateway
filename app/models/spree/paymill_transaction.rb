@@ -8,5 +8,8 @@ module Spree
     serialize :payment_response, Paymill::Payment
     serialize :transaction_response, Paymill::Transaction
 
+    def imported
+      false
+    end
   end
 end

@@ -3,10 +3,9 @@ var SpreePaymillHandler = function() {
   var SpreePaymillHandlerConstructor = function(options) {
     options = options || {};
 
-    this.paramPrefix = options.prefix;
-    this.paramMethod = options.method;
+    this.paramMethod = PAYMILL_PAYMENT_METHOD_ID;
 
-    this.$paymentForm = $(options.form);
+    this.$paymentForm = $("#checkout_form_payment");
     this.$cardAmount = this.$paymentForm.find("#card_amount");
     this.$cardCurrency = this.$paymentForm.find("#card_currency");
     this.$cardHolderName = this.$paymentForm.find("#card_holdername");
@@ -28,7 +27,7 @@ var SpreePaymillHandler = function() {
           handlePaymillError(error);
         } else {
           var $token_field = $("<input>");
-          $token_field.attr("name", self.paramPrefix + "[token_id]");
+          $token_field.attr("name", "payment_source[" + self.paramMethod + "][token_id]");
           $token_field.attr("type", "hidden");
           $token_field.val(result.token);
           self.$paymentForm.append($token_field);
@@ -45,6 +44,7 @@ var SpreePaymillHandler = function() {
             break;
           case "field_invalid_card_holder":
             afterError(self.$cardHolderName, "Please enter the card holder's name");
+            break;
           case "field_invalid_card_number":
             afterError(self.$cardNumber, "Please enter a valid card number.");
             break;
@@ -73,7 +73,7 @@ var SpreePaymillHandler = function() {
         element.before('<span class="paymill-error">' + message +'</span>');
       };
 
-      this.$paymentForm.submit(function(event) {
+      $(document).on("submit", this.$paymentForm, function(event) {
         var paymentMethodSelector = "input[id*='payment_method_id']:checked";
         var paymentMethod = self.$paymentForm.find(paymentMethodSelector).val();
 
@@ -104,3 +104,9 @@ var SpreePaymillHandler = function() {
 
   return SpreePaymillHandlerConstructor;
 }();
+
+Spree.ready(function($) {
+  if (($('#checkout_form_payment')).is('*')) {
+      new SpreePaymillHandler().init();
+  }
+});
