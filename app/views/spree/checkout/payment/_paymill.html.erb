@@ -31,12 +31,8 @@
   <%= link_to "(#{Spree.t(:what_is_this)})", spree.content_path('cvv'), target: '_blank', "data-hook" => "cvv_link", id: "cvv_link" %>
 </p>
 
-<%= javascript_include_tag "https://bridge.paymill.com/" %>
+<%= javascript_include_tag "//bridge.paymill.com/" %>
 <script>
   var PAYMILL_PUBLIC_KEY = '<%= payment_method.preferences[:public_key] %>';
   var PAYMILL_PAYMENT_METHOD_ID = '<%= payment_method.id %>';
-
-  $(function() {
-    new SpreePaymillHandler().init();
-  });
 </script>

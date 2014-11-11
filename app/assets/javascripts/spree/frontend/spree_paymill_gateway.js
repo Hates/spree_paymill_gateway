@@ -104,3 +104,9 @@ var SpreePaymillHandler = function() {
 
   return SpreePaymillHandlerConstructor;
 }();
+
+Spree.ready(function($) {
+  if (($('#checkout_form_payment')).is('*')) {
+      new SpreePaymillHandler().init();
+  }
+});
