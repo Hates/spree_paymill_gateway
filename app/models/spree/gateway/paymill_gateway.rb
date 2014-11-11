@@ -15,18 +15,23 @@ module Spree
       Rails.logger.info "Creating payment for paymill token: #{paymill_transaction.token_id}"
 
       begin
-        set_payment_key
-        paymill_payment = Paymill::Payment.create token: paymill_transaction.token_id
+        # Skip processing if the payment looks to have already been made.
+        if paymill_transaction.payment_id
+          Rails.logger.info "Paymill payment already created, reusing: #{paymill_transaction.id}"
+        else
+          set_payment_key
+          paymill_payment = Paymill::Payment.create token: paymill_transaction.token_id
+
+          Rails.logger.info "Paymill payment created: #{paymill_payment.id}"
+          Rails.logger.info "Paymill payment details: #{paymill_payment.inspect}"
+          paymill_transaction.payment_id = paymill_payment.id
+          paymill_transaction.payment_response = paymill_payment
+          paymill_transaction.save!
+        end
       rescue
         Rails.logger.fatal "Could not create paymill payment: #{$!}"
         raise "Could not create Paymill payment"
       end
-
-      Rails.logger.info "Paymill payment created: #{paymill_payment.id}"
-      Rails.logger.info "Paymill payment details: #{paymill_payment.inspect}"
-      paymill_transaction.payment_id = paymill_payment.id
-      paymill_transaction.payment_response = paymill_payment
-      paymill_transaction.save!
     end
 
     def purchase(money, transaction, options = {})
