@@ -3,10 +3,6 @@
 Paymill gateway for Spree. This uses the [Paymill Javascript Bridge](https://www.paymill.com/en-gb/documentation-3/reference/paymill-bridge/) 
 for payments so no credit card details ever reach your server. This removes the hassle for PCI compliance.
 
-This can be used as the basis for Stripe Javascript payments to as they are very similar in practice.
-
-**This is very much still work in progress!**
-
 ## Installation
 
 Add spree_paymill_gateway to your Gemfile:
