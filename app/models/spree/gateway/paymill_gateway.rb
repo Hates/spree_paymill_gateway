@@ -11,14 +11,16 @@ module Spree
     preference :currency, :string, default: "GBP"
 
     def create_profile(payment)
+      order = payment.order
       paymill_transaction = payment.source
       Rails.logger.info "Creating payment for paymill token: #{paymill_transaction.token_id}"
 
       begin
         set_payment_key
-        paymill_payment = Paymill::Payment.create token: paymill_transaction.token_id
+        paymill_client = Paymill::Client.create email: order.email
+        paymill_payment = Paymill::Payment.create token: paymill_transaction.token_id, client: paymill_client.id
       rescue
-        Rails.logger.fatal "Could not create paymill payment: #{$!}"
+        Rails.logger.fatal "Could not create paymill details: #{$!}"
         raise "Could not create Paymill payment"
       end
 
@@ -40,7 +42,7 @@ module Spree
           paymill_transaction = Paymill::Transaction.create payment: payment_id,
             amount: money.to_i,
             currency: preferences[:currency],
-            description: "Order: #{payment_id}"
+            description: options[:order_id]
 
           Rails.logger.info "Paymill transaction completed: #{paymill_transaction.id} - #{paymill_transaction.response_code}"
           Rails.logger.info "Paymill transaction details: #{paymill_transaction.inspect}"
