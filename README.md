@@ -5,7 +5,10 @@ for payments so no credit card details ever reach your server. This removes the 
 
 This can be used as the basis for Stripe Javascript payments to as they are very similar in practice.
 
-**This is very much still work in progress!**
+## IMPORTANT NOTICE
+
+There are no tests, so use this at your own risk. I am currently using the `2-2-stable` branch in production, which I may make changes to, but do not expect these changes to be merged into other branches.
+Some extra checkins have been made to the `2-4-stable` branch, so choose your starting point for your own fork carefully.
 
 ## Installation
 
