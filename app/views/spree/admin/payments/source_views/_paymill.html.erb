@@ -5,7 +5,7 @@
       <div class="alpha twelve columns">
         <dl>
           <dt><%= Spree.t(:transaction) %>:</dt>
-          <dd><%= link_to payment.source.transaction_id, "https://app.paymill.com/en-gb#!/transactions/#{payment.source.transaction_id}", target: "_blank" %></dd>
+          <dd><%= link_to payment.source.transaction_id, "https://app.paymill.com/transactions/#{payment.source.transaction_id}", target: "_blank" %></dd>
           <dt><%= Spree.t(:card) %>:</dt>
           <dd>XXXX-XXXX-XXXX-<%= payment.source.transaction_response.payment["last4"] %></dd>
           <dt><%= Spree.t(:expiration) %>:</dt>
