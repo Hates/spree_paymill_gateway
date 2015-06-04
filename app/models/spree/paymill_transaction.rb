@@ -8,5 +8,7 @@ module Spree
     serialize :payment_response, Paymill::Payment
     serialize :transaction_response, Paymill::Transaction
 
+    scope :with_payment_profile, -> { where('transaction_id IS NOT NULL') }
+
   end
 end
