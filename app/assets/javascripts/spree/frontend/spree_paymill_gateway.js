@@ -64,6 +64,7 @@ var SpreePaymillHandler = function() {
 
         self.$submitButton.removeAttr('disabled');
         self.$submitButton.removeClass('disabled');
+        self.$submitButton.addClass('primary');
       };
 
       var afterError = function(element, message) {
