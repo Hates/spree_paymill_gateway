@@ -64,6 +64,7 @@ module Spree
     end
 
     def set_payment_key
+      Paymill.api_version = "v2.1"
       Paymill.api_key = preferences[:private_key]
     end
 
