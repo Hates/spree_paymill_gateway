@@ -3,7 +3,6 @@ var SpreePaymillHandler = function() {
   var SpreePaymillHandlerConstructor = function() {
     this.paramMethod = PAYMILL_PAYMENT_METHOD_ID;
 
-
     this.$paymentForm = $("#checkout_form_payment");
     this.$paymentContainer = this.$paymentForm.find("#paymill-container");
     this.$cardAmount = this.$paymentForm.find("#card_amount");

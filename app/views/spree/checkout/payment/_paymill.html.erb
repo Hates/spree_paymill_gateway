@@ -1,5 +1,4 @@
 <%= image_tag 'paymill_credit_card.png', id: 'credit-card-image' %>
-<% options_hash = Rails.env.production? ? {autocomplete: 'off'} : {} %>
 <% param_prefix = "payment_source[#{payment_method.id}]" %>
 
 <%= hidden_field param_prefix, 'card_amount', value: (@order.total * 100).to_i, id: "card_amount", name: "" %>
