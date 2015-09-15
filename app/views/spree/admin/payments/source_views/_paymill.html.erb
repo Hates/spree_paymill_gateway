@@ -7,9 +7,9 @@
           <dt><%= Spree.t(:transaction) %>:</dt>
           <dd><%= link_to payment.source.transaction_id, "https://app.paymill.com/transactions/#{payment.source.transaction_id}", target: "_blank" %></dd>
           <dt><%= Spree.t(:card) %>:</dt>
-          <dd>XXXX-XXXX-XXXX-<%= payment.source.transaction_response.payment["last4"] %></dd>
+          <dd>XXXX-XXXX-XXXX-<%= payment.source.transaction_response.payment.last4.to_s %></dd>
           <dt><%= Spree.t(:expiration) %>:</dt>
-          <dd><%= payment.source.transaction_response.payment["expire_month"] %>/<%= payment.source.transaction_response.payment["expire_year"] %></dd>
+          <dd><%= payment.source.transaction_response.payment.expire_month %>/<%= payment.source.transaction_response.payment.expire_year %></dd>
         </dl>
       </div>
     </div>

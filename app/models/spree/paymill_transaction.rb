@@ -5,8 +5,8 @@ module Spree
 
     has_many :payments, as: :source
 
-    serialize :payment_response, Paymill::Payment
-    serialize :transaction_response, Paymill::Transaction
+    serialize :payment_response
+    serialize :transaction_response
 
     scope :with_payment_profile, -> { where('transaction_id IS NOT NULL') }
 
