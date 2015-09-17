@@ -1,19 +1,27 @@
 <fieldset data-hook="credit_card">
-  <% if payment.source && payment.source.transaction_id && payment.source.transaction_response && payment.source.transaction_response.payment %>
+  <% if payment.source &&
+      payment.source.transaction_id &&
+      payment.source.transaction_response &&
+      payment.source.transaction_response.payment %>
+    <% transaction_response = payment.source.transaction_response %>
+    <% transaction_payment = transaction_response.payment %>
     <legend align="center"><%= Spree.t(:credit_card) %></legend>
     <div class="row">
       <div class="alpha twelve columns">
         <dl>
           <dt><%= Spree.t(:transaction) %>:</dt>
           <dd><%= link_to payment.source.transaction_id, "https://app.paymill.com/transactions/#{payment.source.transaction_id}", target: "_blank" %></dd>
-          <dt><%= Spree.t(:card) %>:</dt>
-          <% if payment.source.transaction_response.payment.kind_of?(Paymill::Payment) %>
-            <dd>XXXX-XXXX-XXXX-<%= payment.source.transaction_response.payment.last4.to_s %></dd>
+          <% if transaction_payment.kind_of?(Paymill::Payment) %>
+            <dt><%= Spree.t(:card) %>:</dt>
+            <dd>XXXX-XXXX-XXXX-<%= transaction_payment.last4.to_s %></dd>
+            <dt><%= Spree.t(:expiration) %>:</dt>
+            <dd><%= payment.source.transaction_response.payment.expire_month %>/<%= payment.source.transaction_response.payment.expire_year %></dd>
           <% else %>
-            <dd>XXXX-XXXX-XXXX-<%= payment.source.transaction_response.payment["last4"] %></dd>
+            <dt><%= Spree.t(:card) %>:</dt>
+            <dd>XXXX-XXXX-XXXX-<%= transaction_payment["last4"] %></dd>
+            <dt><%= Spree.t(:expiration) %>:</dt>
+            <dd><%= transaction_payment["expire_month"] %>/<%= transaction_payment["expire_year"] %></dd>
           <% end %>
-          <dt><%= Spree.t(:expiration) %>:</dt>
-          <dd><%= payment.source.transaction_response.payment.expire_month %>/<%= payment.source.transaction_response.payment.expire_year %></dd>
         </dl>
       </div>
     </div>
